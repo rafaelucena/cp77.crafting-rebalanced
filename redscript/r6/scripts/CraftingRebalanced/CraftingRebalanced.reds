@@ -1,4 +1,8 @@
 // Version v1.61.2.0
+module CraftingRebalanced
+
+@addMethod(RPGManager)
+public static func IsCraftingRebalancedEnabled() -> Bool = true;
 
 // CRAFTING SYSTEM SETTINGS | PARAMETERS
 // UPGRADING SECTION | UPGRADE SECTION
@@ -54,6 +58,10 @@ public final static func GetPlayerLevel(target: ref<GameObject>) -> Float {
 // UPGRADING SECTION | UPGRADE SECTION
 @wrapMethod(CraftingSystem)
 public final const func GetItemFinalUpgradeCost(itemData: wref<gameItemData>) -> array<IngredientData> {
+  if !RPGManager.IsCraftingRebalancedEnabled() {
+    return wrappedMethod(itemData);
+  }
+
   return this.GetItemFinalUpgradeCostRebalanced(itemData);
 }
 
@@ -96,6 +104,10 @@ public final const func GetItemFinalUpgradeCostRebalanced(itemData: wref<gameIte
 // DISASSEMBLING SECTION | DISASSEMBLE SECTION
 @wrapMethod(CraftingSystem)
 public final const func GetDisassemblyResultItems(target: wref<GameObject>, itemID: ItemID, amount: Int32, out restoredAttachments: array<ItemAttachments>, opt calledFromUI: Bool) -> array<IngredientData> {
+  if !RPGManager.IsCraftingRebalancedEnabled() {
+    return wrappedMethod(target, itemID, amount, restoredAttachments, calledFromUI);
+  }
+
   if (RPGManager.IsItemWeapon(itemID) || RPGManager.IsItemClothing(itemID)) {
     return this.GetDisassemblyResultItemsRebalanced(target, itemID, amount, restoredAttachments, calledFromUI);
   }
@@ -159,6 +171,10 @@ public final const func GetDisassemblyResultItemsRebalanced(target: wref<GameObj
 // CRAFTING SECTION | CRAFT SECTION
 @wrapMethod(CraftingSystem)
 public final const func GetItemCraftingCost(record: wref<Item_Record>, craftingData: array<wref<RecipeElement_Record>>) -> array<IngredientData> {
+  if !RPGManager.IsCraftingRebalancedEnabled() {
+    return wrappedMethod(record, craftingData);
+  }
+
   if Equals(record.ItemCategory().Name(), n"Weapon") || Equals(record.ItemCategory().Name(), n"Clothing") {
     return this.GetItemCraftingCostRebalanced(record, craftingData);
   };
