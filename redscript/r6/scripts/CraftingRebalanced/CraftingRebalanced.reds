@@ -20,17 +20,17 @@ public static func GetWeaponDisassemblingDivider() -> Float = 4.0;
 public static func GetClothingDisassemblingDivider() -> Float = 16.0;
 
 // CRAFTING SECTION | CRAFT SECTION
-@addField(CraftingSystem)
-public let itemTypeWeaponCraftingDivider: Float = 2.00;
+@addMethod(RPGManager)
+public static func GetWeaponCraftingDivider() -> Float = 2.0;
+
+@addMethod(RPGManager)
+public static func GetClothingCraftingDivider() -> Float = 8.0;
 
 @addField(CraftingSystem)
 public let itemTypeWeaponIconicCraftingDivider: Float = 1.00;
 
 @addField(CraftingSystem)
 public let itemTypeClothingIconicCraftingDivider: Float = 4.00;
-
-@addField(CraftingSystem)
-public let itemTypeClothingCraftingDivider: Float = 8.00;
 
 /*
   DO NOT SET ANY OF THE PARAMETERS ABOVE TO ZERO.
@@ -223,14 +223,14 @@ public final const func GetItemCraftingCostRebalanced(record: wref<Item_Record>,
     };
 
     if Equals(record.ItemCategory().Name(), n"Weapon") {
-        itemTypeDivider = this.itemTypeWeaponCraftingDivider;
+        itemTypeDivider = RPGManager.GetWeaponCraftingDivider();
 
         if isItemIconic {
           itemTypeDivider = this.itemTypeWeaponIconicCraftingDivider;
         }
     } else {
       if Equals(record.ItemCategory().Name(), n"Clothing") {
-        itemTypeDivider = this.itemTypeClothingCraftingDivider;
+        itemTypeDivider = RPGManager.GetClothingCraftingDivider();
 
         if isItemIconic {
           itemTypeDivider = this.itemTypeClothingIconicCraftingDivider;

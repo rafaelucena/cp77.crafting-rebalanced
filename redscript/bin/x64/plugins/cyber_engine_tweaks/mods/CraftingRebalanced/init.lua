@@ -1,9 +1,11 @@
 local settings = {
     isCraftingRebalancedEnabled = true,
+    itemTypeWeaponCraftingDivider = 2.0,
+    itemTypeClothingCraftingDivider = 8.0,
     itemTypeWeaponUpgradingDivider = 1.0,
     itemTypeClothingUpgradingDivider = 4.0,
     itemTypeWeaponDisassemblingDivider = 4.0,
-    itemTypeClothingDisassemblingDivider = 16.00,
+    itemTypeClothingDisassemblingDivider = 16.0,
 }
 
 local GameUI = require('GameUI')
@@ -20,6 +22,15 @@ registerForEvent("onInit", function()
     -- MAIN MOD SWITCH
     Override("RPGManager", "IsCraftingRebalancedEnabled;", function ()
         return settings.isCraftingRebalancedEnabled
+    end)
+
+    -- CRAFTING STUFF SECTION
+    Override("RPGManager", "GetWeaponCraftingDivider;", function ()
+        return settings.itemTypeWeaponCraftingDivider
+    end)
+
+    Override("RPGManager", "GetClothingCraftingDivider;", function ()
+        return settings.itemTypeClothingCraftingDivider
     end)
 
     -- UPGRADING STUFF SECTION
@@ -106,11 +117,42 @@ function SetupMenu()
         end
     )
 
+    -- CRAFTING STUFF SECTION
+    nativeSettings.addRangeFloat(
+        "/RalphMods/crafting_rebalanced",
+        "Crafting: Weapon cost divider",
+        "Affects the amount of components needed for crafting weapons, being: ((original components * player level) / weapon divider)",
+        1,
+        50,
+        1,
+        "%.0f",
+        settings.itemTypeWeaponCraftingDivider,
+        2,
+        function(value)
+            settings.itemTypeWeaponCraftingDivider = value
+        end
+    )
+
+    nativeSettings.addRangeFloat(
+        "/RalphMods/crafting_rebalanced",
+        "Crafting: Clothing cost divider",
+        "Affects the amount of components needed for crafting clothes, being: ((original components * player level) / clothes divider)",
+        1,
+        50,
+        1,
+        "%.0f",
+        settings.itemTypeClothingCraftingDivider,
+        8,
+        function(value)
+            settings.itemTypeClothingCraftingDivider = value
+        end
+    )
+
     -- Parameters: path, label, desc, min, max, step, format, currentValue, defaultValue, callback
     -- UPGRADING STUFF SECTION
     nativeSettings.addRangeFloat(
         "/RalphMods/crafting_rebalanced",
-        "Weapon upgrading cost divider",
+        "Upgrading: Weapon cost divider",
         "Affects the amount of components needed for upgrading weapons, being: ((original components * item level) / weapon divider)",
         1,
         50,
@@ -125,7 +167,7 @@ function SetupMenu()
 
     nativeSettings.addRangeFloat(
         "/RalphMods/crafting_rebalanced",
-        "Clothing upgrading cost divider",
+        "Upgrading: Clothing cost divider",
         "Affects the amount of components needed for upgrading clothes, being: ((original components * item level) / clothes divider)",
         1,
         50,
@@ -141,7 +183,7 @@ function SetupMenu()
     -- DISASSEMBLING STUFF SECTION
     nativeSettings.addRangeFloat(
         "/RalphMods/crafting_rebalanced",
-        "Weapon disassembling reward divider",
+        "Disassembling: Weapon reward divider",
         "Affects the amount of components rewarded for disassembling weapons, being: ((original components * item level) / weapon divider)",
         1,
         50,
@@ -156,7 +198,7 @@ function SetupMenu()
 
     nativeSettings.addRangeFloat(
         "/RalphMods/crafting_rebalanced",
-        "Clothing disassembling reward divider",
+        "Disassembling: Clothing reward divider",
         "Affects the amount of components rewarded for disassembling clothes, being: ((original components * item level) / clothes divider)",
         1,
         50,
