@@ -95,7 +95,11 @@ public final const func GetItemFinalUpgradeCostRebalanced(itemData: wref<gameIte
   i = 0;
   while i < ArraySize(ingredients) {
     tempQuantity = Cast<Float>(ingredients[i].quantity) * itemLevel;
-    ingredients[i].quantity = Cast<Int32>(tempQuantity / itemTypeDivider);
+    ingredients[i].quantity = RoundMath(tempQuantity / itemTypeDivider);
+    if (ingredients[i].quantity <= 0) {
+      ingredients[i].quantity = 1;
+    }
+
     ingredients[i].baseQuantity = ingredients[i].quantity;
 
     if tempStat > 0.00 {
