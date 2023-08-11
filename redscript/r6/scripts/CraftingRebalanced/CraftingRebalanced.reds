@@ -4,13 +4,19 @@ module CraftingRebalanced
 @addMethod(RPGManager)
 public static func IsCraftingRebalancedEnabled() -> Bool = true;
 
+@addMethod(RPGManager)
+public static func GetWeaponUpgradingDivider() -> Float = 1.0;
+
+@addMethod(RPGManager)
+public static func GetClothingUpgradingDivider() -> Float = 4.0;
+
 // CRAFTING SYSTEM SETTINGS | PARAMETERS
 // UPGRADING SECTION | UPGRADE SECTION
-@addField(CraftingSystem)
-public let itemTypeWeaponUpgradingDivider: Float = 1.00;
+// @addField(CraftingSystem)
+// public let itemTypeWeaponUpgradingDivider: Float = 1.00;
 
-@addField(CraftingSystem)
-public let itemTypeClothingUpgradingDivider: Float = 4.00;
+// @addField(CraftingSystem)
+// public let itemTypeClothingUpgradingDivider: Float = 4.00;
 
 // DISASSEMBLING SECTION | DISASSEMBLE SECTION
 @addField(CraftingSystem)
@@ -77,10 +83,10 @@ public final const func GetItemFinalUpgradeCostRebalanced(itemData: wref<gameIte
 
   itemLevel += 1.00;
   if RPGManager.IsItemWeapon(itemData.GetID()) {
-    itemTypeDivider = this.itemTypeWeaponUpgradingDivider;
+    itemTypeDivider = RPGManager.GetWeaponUpgradingDivider();
   } else {
     if RPGManager.IsItemClothing(itemData.GetID()) {
-      itemTypeDivider = this.itemTypeClothingUpgradingDivider;
+      itemTypeDivider = RPGManager.GetClothingUpgradingDivider();
     }
   }
 
