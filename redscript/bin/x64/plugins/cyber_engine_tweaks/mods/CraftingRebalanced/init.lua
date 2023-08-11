@@ -1,7 +1,9 @@
 local settings = {
     isCraftingRebalancedEnabled = true,
     itemTypeWeaponUpgradingDivider = 1.0,
-    itemTypeClothingUpgradingDivider = 4.0
+    itemTypeClothingUpgradingDivider = 4.0,
+    itemTypeWeaponDisassemblingDivider = 4.0,
+    itemTypeClothingDisassemblingDivider = 16.00,
 }
 
 local GameUI = require('GameUI')
@@ -15,10 +17,12 @@ registerForEvent("onInit", function()
     LoadSettings()
     SetupMenu()
 
+    -- MAIN MOD SWITCH
     Override("RPGManager", "IsCraftingRebalancedEnabled;", function ()
         return settings.isCraftingRebalancedEnabled
     end)
 
+    -- UPGRADING STUFF SECTION
     Override("RPGManager", "GetWeaponUpgradingDivider;", function ()
         return settings.itemTypeWeaponUpgradingDivider
     end)
@@ -26,6 +30,16 @@ registerForEvent("onInit", function()
     Override("RPGManager", "GetClothingUpgradingDivider;", function ()
         return settings.itemTypeClothingUpgradingDivider
     end)
+
+    -- DISASSEMBLING STUFF SECTION
+    Override("RPGManager", "GetWeaponDisassemblingDivider;", function ()
+        return settings.itemTypeWeaponDisassemblingDivider
+    end)
+
+    Override("RPGManager", "GetClothingDisassemblingDivider;", function ()
+        return settings.itemTypeClothingDisassemblingDivider
+    end)
+
 end)
 
 function SetupLanguageListener()
@@ -80,6 +94,7 @@ function SetupMenu()
     end
     nativeSettings.addSubcategory("/RalphMods/crafting_rebalanced", "Crafting Rebalanced")
 
+    -- MAIN MOD SWITCH
     nativeSettings.addSwitch(
         "/RalphMods/crafting_rebalanced",
         "Enable/Disable this mod",
@@ -92,6 +107,7 @@ function SetupMenu()
     )
 
     -- Parameters: path, label, desc, min, max, step, format, currentValue, defaultValue, callback
+    -- UPGRADING STUFF SECTION
     nativeSettings.addRangeFloat(
         "/RalphMods/crafting_rebalanced",
         "Weapon upgrading cost divider",
@@ -119,6 +135,37 @@ function SetupMenu()
         4,
         function(value)
             settings.itemTypeClothingUpgradingDivider = value
+        end
+    )
+
+    -- DISASSEMBLING STUFF SECTION
+    nativeSettings.addRangeFloat(
+        "/RalphMods/crafting_rebalanced",
+        "Weapon disassembling reward divider",
+        "Affects the amount of components rewarded for disassembling weapons, being: ((original components * item level) / weapon divider)",
+        1,
+        50,
+        1,
+        "%.0f",
+        settings.itemTypeWeaponDisassemblingDivider,
+        4,
+        function(value)
+            settings.itemTypeWeaponDisassemblingDivider = value
+        end
+    )
+
+    nativeSettings.addRangeFloat(
+        "/RalphMods/crafting_rebalanced",
+        "Clothing disassembling reward divider",
+        "Affects the amount of components rewarded for disassembling clothes, being: ((original components * item level) / clothes divider)",
+        1,
+        50,
+        1,
+        "%.0f",
+        settings.itemTypeClothingDisassemblingDivider,
+        16,
+        function(value)
+            settings.itemTypeClothingDisassemblingDivider = value
         end
     )
 

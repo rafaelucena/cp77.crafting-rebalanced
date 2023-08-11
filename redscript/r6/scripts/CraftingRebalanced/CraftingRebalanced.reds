@@ -1,29 +1,23 @@
 // Version v1.61.2.0
 module CraftingRebalanced
 
+// CRAFTING SYSTEM SETTINGS | PARAMETERS
 @addMethod(RPGManager)
 public static func IsCraftingRebalancedEnabled() -> Bool = true;
 
+// UPGRADING SECTION | UPGRADE SECTION
 @addMethod(RPGManager)
 public static func GetWeaponUpgradingDivider() -> Float = 1.0;
 
 @addMethod(RPGManager)
 public static func GetClothingUpgradingDivider() -> Float = 4.0;
 
-// CRAFTING SYSTEM SETTINGS | PARAMETERS
-// UPGRADING SECTION | UPGRADE SECTION
-// @addField(CraftingSystem)
-// public let itemTypeWeaponUpgradingDivider: Float = 1.00;
-
-// @addField(CraftingSystem)
-// public let itemTypeClothingUpgradingDivider: Float = 4.00;
-
 // DISASSEMBLING SECTION | DISASSEMBLE SECTION
-@addField(CraftingSystem)
-public let itemTypeWeaponDisassemblingDivider: Float = 4.00;
+@addMethod(RPGManager)
+public static func GetWeaponDisassemblingDivider() -> Float = 4.0;
 
-@addField(CraftingSystem)
-public let itemTypeClothingDisassemblingDivider: Float = 16.00;
+@addMethod(RPGManager)
+public static func GetClothingDisassemblingDivider() -> Float = 16.0;
 
 // CRAFTING SECTION | CRAFT SECTION
 @addField(CraftingSystem)
@@ -143,10 +137,10 @@ public final const func GetDisassemblyResultItemsRebalanced(target: wref<GameObj
   itemQual = RPGManager.GetItemQuality(itemData);
 
   if RPGManager.IsItemWeapon(itemID) {
-    itemTypeDivider = this.itemTypeWeaponDisassemblingDivider;
+    itemTypeDivider = RPGManager.GetWeaponDisassemblingDivider();
   } else {
     if RPGManager.IsItemClothing(itemID) {
-      itemTypeDivider = this.itemTypeClothingDisassemblingDivider;
+      itemTypeDivider = RPGManager.GetClothingDisassemblingDivider();
     }
   }
 
