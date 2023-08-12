@@ -115,7 +115,7 @@ function SetupMenu()
     end
     nativeSettings.addSubcategory("/RalphMods/crafting_rebalanced", "Crafting Rebalanced")
 
-    -- MAIN MOD SWITCH
+    -- MAIN MOD SWITCH (path, label, desc, min, max, step, format, currentValue, defaultValue, callback, optionalIndex)
     nativeSettings.addSwitch(
         "/RalphMods/crafting_rebalanced",
         "Enable/Disable this mod",
@@ -124,7 +124,8 @@ function SetupMenu()
         true,
         function(state)
             settings.isCraftingRebalancedEnabled = state
-        end
+        end,
+        0
     )
 
     -- CRAFTING STUFF SECTION
@@ -188,7 +189,6 @@ function SetupMenu()
         end
     )
 
-    -- Parameters: path, label, desc, min, max, step, format, currentValue, defaultValue, callback
     -- UPGRADING STUFF SECTION
     nativeSettings.addRangeFloat(
         "/RalphMods/crafting_rebalanced",
