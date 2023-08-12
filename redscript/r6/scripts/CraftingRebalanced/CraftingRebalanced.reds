@@ -26,11 +26,11 @@ public static func GetWeaponCraftingDivider() -> Float = 2.0;
 @addMethod(RPGManager)
 public static func GetClothingCraftingDivider() -> Float = 8.0;
 
-@addField(CraftingSystem)
-public let itemTypeWeaponIconicCraftingDivider: Float = 1.00;
+@addMethod(RPGManager)
+public static func GetIconicWeaponCraftingDivider() -> Float = 1.0;
 
-@addField(CraftingSystem)
-public let itemTypeClothingIconicCraftingDivider: Float = 4.00;
+@addMethod(RPGManager)
+public static func GetIconicClothingCraftingDivider() -> Float = 4.0;
 
 /*
   DO NOT SET ANY OF THE PARAMETERS ABOVE TO ZERO.
@@ -223,17 +223,17 @@ public final const func GetItemCraftingCostRebalanced(record: wref<Item_Record>,
     };
 
     if Equals(record.ItemCategory().Name(), n"Weapon") {
-        itemTypeDivider = RPGManager.GetWeaponCraftingDivider();
+      itemTypeDivider = RPGManager.GetWeaponCraftingDivider();
 
-        if isItemIconic {
-          itemTypeDivider = this.itemTypeWeaponIconicCraftingDivider;
-        }
+      if isItemIconic {
+        itemTypeDivider = RPGManager.GetIconicWeaponCraftingDivider();
+      }
     } else {
       if Equals(record.ItemCategory().Name(), n"Clothing") {
         itemTypeDivider = RPGManager.GetClothingCraftingDivider();
 
         if isItemIconic {
-          itemTypeDivider = this.itemTypeClothingIconicCraftingDivider;
+          itemTypeDivider = RPGManager.GetIconicClothingCraftingDivider();
         };
       };
     };
@@ -244,6 +244,7 @@ public final const func GetItemCraftingCostRebalanced(record: wref<Item_Record>,
       ingredient = ItemID.CreateQuery(baseIngredients[i].id.GetID());
       if !RPGManager.IsItemWeapon(ingredient) && !RPGManager.IsItemClothing(ingredient) {
         modifiedQuantity = CeilF((Cast<Float>(baseIngredients[i].quantity) * levelDifferential) / itemTypeDivider);
+
         if (modifiedQuantity <= 0) {
           modifiedQuantity = 1;
         }

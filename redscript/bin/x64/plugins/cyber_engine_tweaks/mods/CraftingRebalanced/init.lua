@@ -2,6 +2,8 @@ local settings = {
     isCraftingRebalancedEnabled = true,
     itemTypeWeaponCraftingDivider = 2.0,
     itemTypeClothingCraftingDivider = 8.0,
+    itemTypeWeaponIconicCraftingDivider = 1.0,
+    itemTypeClothingIconicCraftingDivider = 4.0,
     itemTypeWeaponUpgradingDivider = 1.0,
     itemTypeClothingUpgradingDivider = 4.0,
     itemTypeWeaponDisassemblingDivider = 4.0,
@@ -31,6 +33,14 @@ registerForEvent("onInit", function()
 
     Override("RPGManager", "GetClothingCraftingDivider;", function ()
         return settings.itemTypeClothingCraftingDivider
+    end)
+
+    Override("RPGManager", "GetIconicWeaponCraftingDivider;", function ()
+        return settings.itemTypeWeaponIconicCraftingDivider
+    end)
+
+    Override("RPGManager", "GetIconicClothingCraftingDivider;", function ()
+        return settings.itemTypeClothingIconicCraftingDivider
     end)
 
     -- UPGRADING STUFF SECTION
@@ -145,6 +155,36 @@ function SetupMenu()
         8,
         function(value)
             settings.itemTypeClothingCraftingDivider = value
+        end
+    )
+
+    nativeSettings.addRangeFloat(
+        "/RalphMods/crafting_rebalanced",
+        "Iconic Crafting: Weapon cost divider",
+        "Affects the amount of components needed for crafting iconic weapons, being: ((original components * player level) / weapon divider)",
+        1,
+        50,
+        1,
+        "%.0f",
+        settings.itemTypeWeaponIconicCraftingDivider,
+        1,
+        function(value)
+            settings.itemTypeWeaponIconicCraftingDivider = value
+        end
+    )
+
+    nativeSettings.addRangeFloat(
+        "/RalphMods/crafting_rebalanced",
+        "Iconic Crafting: Clothing cost divider",
+        "Affects the amount of components needed for crafting iconic clothes, being: ((original components * player level) / clothes divider)",
+        1,
+        50,
+        1,
+        "%.0f",
+        settings.itemTypeClothingIconicCraftingDivider,
+        4,
+        function(value)
+            settings.itemTypeClothingIconicCraftingDivider = value
         end
     )
 
