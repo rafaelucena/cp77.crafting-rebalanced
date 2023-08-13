@@ -185,7 +185,7 @@ function SetupMenu()
     local craftingIconicClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingIconicClothingDividerSetup))
 
     -- UPGRADING STUFF SECTION
-    nativeSettings.addRangeFloat(
+    local optionUpgradingWeaponDividerSetup = {
         "/RalphMods/crafting_rebalanced",
         "Upgrading: Weapon cost divider",
         "Affects the amount of components needed for upgrading weapons, being: ((original components * item level) / weapon divider)",
@@ -197,10 +197,12 @@ function SetupMenu()
         1,
         function(value)
             settings.itemTypeWeaponUpgradingDivider = value
-        end
-    )
+        end,
+        6
+    }
+    local upgradingWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionUpgradingWeaponDividerSetup))
 
-    nativeSettings.addRangeFloat(
+    local optionUpgradingClothingDividerSetup = {
         "/RalphMods/crafting_rebalanced",
         "Upgrading: Clothing cost divider",
         "Affects the amount of components needed for upgrading clothes, being: ((original components * item level) / clothes divider)",
@@ -212,8 +214,10 @@ function SetupMenu()
         4,
         function(value)
             settings.itemTypeClothingUpgradingDivider = value
-        end
-    )
+        end,
+        7
+    }
+    local upgradingClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionUpgradingClothingDividerSetup))
 
     -- DISASSEMBLING STUFF SECTION
     nativeSettings.addRangeFloat(
@@ -261,12 +265,18 @@ function SetupMenu()
                 nativeSettings.removeOption(craftingClothingDivider)
                 nativeSettings.removeOption(craftingIconicWeaponDivider)
                 nativeSettings.removeOption(craftingIconicClothingDivider)
+                -- UPGRADING STUFF SECTION
+                nativeSettings.removeOption(upgradingWeaponDivider)
+                nativeSettings.removeOption(upgradingClothingDivider)
             else
                 -- CRAFTING STUFF SECTION
                 craftingWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingWeaponDividerSetup))
                 craftingClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingClothingDividerSetup))
                 craftingIconicWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingIconicWeaponDividerSetup))
                 craftingIconicClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingIconicClothingDividerSetup))
+                -- UPGRADING STUFF SECTION
+                upgradingWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionUpgradingWeaponDividerSetup))
+                upgradingClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionUpgradingClothingDividerSetup))
             end
 
             nativeSettings.refresh()
