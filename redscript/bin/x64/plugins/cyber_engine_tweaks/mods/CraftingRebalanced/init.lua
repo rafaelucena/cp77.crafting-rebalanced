@@ -2,8 +2,8 @@ local settings = {
     isCraftingRebalancedEnabled = true,
     itemTypeWeaponCraftingDivider = 2.0,
     itemTypeClothingCraftingDivider = 8.0,
-    itemTypeWeaponIconicCraftingDivider = 1.0,
-    itemTypeClothingIconicCraftingDivider = 4.0,
+    itemTypeIconicWeaponCraftingDivider = 1.0,
+    itemTypeIconicClothingCraftingDivider = 4.0,
     itemTypeWeaponUpgradingDivider = 1.0,
     itemTypeClothingUpgradingDivider = 4.0,
     itemTypeWeaponDisassemblingDivider = 4.0,
@@ -36,11 +36,11 @@ registerForEvent("onInit", function()
     end)
 
     Override("RPGManager", "GetIconicWeaponCraftingDivider;", function ()
-        return settings.itemTypeWeaponIconicCraftingDivider
+        return settings.itemTypeIconicWeaponCraftingDivider
     end)
 
     Override("RPGManager", "GetIconicClothingCraftingDivider;", function ()
-        return settings.itemTypeClothingIconicCraftingDivider
+        return settings.itemTypeIconicClothingCraftingDivider
     end)
 
     -- UPGRADING STUFF SECTION
@@ -115,21 +115,8 @@ function SetupMenu()
     end
     nativeSettings.addSubcategory("/RalphMods/crafting_rebalanced", "Crafting Rebalanced")
 
-    -- MAIN MOD SWITCH (path, label, desc, min, max, step, format, currentValue, defaultValue, callback, optionalIndex)
-    nativeSettings.addSwitch(
-        "/RalphMods/crafting_rebalanced",
-        "Enable/Disable this mod",
-        "Returning the crafting calculation to it's original values or update them to this mod configurations",
-        settings.isCraftingRebalancedEnabled,
-        true,
-        function(state)
-            settings.isCraftingRebalancedEnabled = state
-        end,
-        0
-    )
-
     -- CRAFTING STUFF SECTION
-    nativeSettings.addRangeFloat(
+    local optionCraftingWeaponDividerSetup = {
         "/RalphMods/crafting_rebalanced",
         "Crafting: Weapon cost divider",
         "Affects the amount of components needed for crafting weapons, being: ((original components * player level) / weapon divider)",
@@ -141,10 +128,12 @@ function SetupMenu()
         2,
         function(value)
             settings.itemTypeWeaponCraftingDivider = value
-        end
-    )
+        end,
+        2
+    }
+    local craftingWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingWeaponDividerSetup))
 
-    nativeSettings.addRangeFloat(
+    local optionCraftingClothingDividerSetup = {
         "/RalphMods/crafting_rebalanced",
         "Crafting: Clothing cost divider",
         "Affects the amount of components needed for crafting clothes, being: ((original components * player level) / clothes divider)",
@@ -156,10 +145,12 @@ function SetupMenu()
         8,
         function(value)
             settings.itemTypeClothingCraftingDivider = value
-        end
-    )
+        end,
+        3
+    }
+    local craftingClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingClothingDividerSetup))
 
-    nativeSettings.addRangeFloat(
+    local optionCraftingIconicWeaponDividerSetup = {
         "/RalphMods/crafting_rebalanced",
         "Iconic Crafting: Weapon cost divider",
         "Affects the amount of components needed for crafting iconic weapons, being: ((original components * player level) / weapon divider)",
@@ -167,14 +158,16 @@ function SetupMenu()
         50,
         1,
         "%.0f",
-        settings.itemTypeWeaponIconicCraftingDivider,
+        settings.itemTypeIconicWeaponCraftingDivider,
         1,
         function(value)
-            settings.itemTypeWeaponIconicCraftingDivider = value
-        end
-    )
+            settings.itemTypeIconicWeaponCraftingDivider = value
+        end,
+        4
+    }
+    local craftingIconicWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingIconicWeaponDividerSetup))
 
-    nativeSettings.addRangeFloat(
+    local optionCraftingIconicClothingDividerSetup = {
         "/RalphMods/crafting_rebalanced",
         "Iconic Crafting: Clothing cost divider",
         "Affects the amount of components needed for crafting iconic clothes, being: ((original components * player level) / clothes divider)",
@@ -182,12 +175,14 @@ function SetupMenu()
         50,
         1,
         "%.0f",
-        settings.itemTypeClothingIconicCraftingDivider,
+        settings.itemTypeIconicClothingCraftingDivider,
         4,
         function(value)
-            settings.itemTypeClothingIconicCraftingDivider = value
-        end
-    )
+            settings.itemTypeIconicClothingCraftingDivider = value
+        end,
+        5
+    }
+    local craftingIconicClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingIconicClothingDividerSetup))
 
     -- UPGRADING STUFF SECTION
     nativeSettings.addRangeFloat(
@@ -249,6 +244,34 @@ function SetupMenu()
         function(value)
             settings.itemTypeClothingDisassemblingDivider = value
         end
+    )
+
+    -- MAIN MOD SWITCH (path, label, desc, min, max, step, format, currentValue, defaultValue, callback, optionalIndex)
+    nativeSettings.addSwitch(
+        "/RalphMods/crafting_rebalanced",
+        "Enable/Disable this mod",
+        "Returning the crafting calculation to it's original values or update them to this mod configurations",
+        settings.isCraftingRebalancedEnabled,
+        true,
+        function(state)
+            settings.isCraftingRebalancedEnabled = state
+            if state == false then
+                -- CRAFTING STUFF SECTION
+                nativeSettings.removeOption(craftingWeaponDivider)
+                nativeSettings.removeOption(craftingClothingDivider)
+                nativeSettings.removeOption(craftingIconicWeaponDivider)
+                nativeSettings.removeOption(craftingIconicClothingDivider)
+            else
+                -- CRAFTING STUFF SECTION
+                craftingWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingWeaponDividerSetup))
+                craftingClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingClothingDividerSetup))
+                craftingIconicWeaponDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingIconicWeaponDividerSetup))
+                craftingIconicClothingDivider = nativeSettings.addRangeFloat(table.unpack(optionCraftingIconicClothingDividerSetup))
+            end
+
+            nativeSettings.refresh()
+        end,
+        1
     )
 
     nativeSettings.refresh()
